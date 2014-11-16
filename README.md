@@ -12,7 +12,7 @@ For the browser, you can build using [Browserify](http://browserify.org/).
 ## Decoding
 
 This example uses the [concat-frames](https://github.com/devongovett/concat-frames)
-module to collect the output of the JPEG decoder into an array of frame objects.
+module to collect the output of the JPEG decoder into a single buffer.
 
 ```javascript
 var JPEGDecoder = require('jpg-stream/decoder');
