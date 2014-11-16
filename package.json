@@ -11,8 +11,7 @@
     "mocha": "^2.0.1"
   },
   "scripts": {
-    "test": "mocha",
-    "prepublish": "make"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
