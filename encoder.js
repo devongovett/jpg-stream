@@ -14,6 +14,8 @@ function JPEGEncoder(width, height, opts) {
   this.encoder.colorSpace = this.colorSpace;
   if (opts && opts.quality)
     this.encoder.quality = opts.quality;
+  
+  this.ended = false;
         
   var self = this;
   this.encoder.callback = function(type, ptr, len) {
@@ -23,6 +25,7 @@ function JPEGEncoder(width, height, opts) {
         break;
         
       case 'error':
+        self.ended = true;
         self.encoder.delete();
         self.emit('error', new Error(ptr));
         break;
@@ -41,14 +44,21 @@ util.inherits(JPEGEncoder, PixelStream);
 JPEGEncoder.prototype.supportedColorSpaces = ['rgb', 'gray', 'cmyk'];
 
 JPEGEncoder.prototype._writePixels = function(data, done) {
-  var buf = data instanceof Uint8Array ? data : new Uint8Array(data);
-  this.encoder.encode(buf);
+  if (!this.ended) {
+    var buf = data instanceof Uint8Array ? data : new Uint8Array(data);
+    this.encoder.encode(buf);
+  }
+  
   done();
 };
 
 JPEGEncoder.prototype._endFrame = function(done) {
-  this.encoder.end();
-  this.encoder.delete();
+  if (!this.ended) {
+    this.ended = true;
+    this.encoder.end();
+    this.encoder.delete();
+  }
+  
   done();
 };
 
