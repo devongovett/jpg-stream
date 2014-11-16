@@ -1,0 +1,33 @@
+{
+  "name": "jpg-stream",
+  "version": "1.0.0",
+  "description": "A streaming JPEG encoder and decoder",
+  "main": "index.js",
+  "dependencies": {
+    "pixel-stream": "^1.0.1"
+  },
+  "devDependencies": {
+    "concat-frames": "^1.0.0",
+    "mocha": "^2.0.1"
+  },
+  "scripts": {
+    "test": "mocha",
+    "prepublish": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/devongovett/jpg-stream.git"
+  },
+  "keywords": [
+    "pixel-stream",
+    "image",
+    "jpeg",
+    "codec"
+  ],
+  "author": "Devon Govett <devongovett@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devongovett/jpg-stream/issues"
+  },
+  "homepage": "https://github.com/devongovett/jpg-stream"
+}
