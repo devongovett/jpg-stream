@@ -4,10 +4,10 @@
   "description": "A streaming JPEG encoder and decoder",
   "main": "index.js",
   "dependencies": {
-    "pixel-stream": "^1.0.1"
+    "pixel-stream": "^1.0.3"
   },
   "devDependencies": {
-    "concat-frames": "^1.0.0",
+    "concat-frames": "^1.0.1",
     "mocha": "^2.0.1"
   },
   "scripts": {

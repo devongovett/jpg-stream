@@ -10,17 +10,17 @@ function JPEGDecoder(opts) {
   if (opts && opts.width && opts.height)
     this.decoder.setDesiredSize(opts.width, opts.height);
     
-  this.width = 0;
-  this.height = 0;
-    
   var self = this;
   this.decoder.callback = function(type, ptr, len) {
     switch (type) {
       case 'outputSize':
-        self.width = self.decoder.width;
-        self.height = self.decoder.height;
-        self.colorSpace = self.decoder.colorSpace;
-        self.emit('format');
+        self.format = {
+          width: self.decoder.width,
+          height: self.decoder.height,
+          colorSpace: self.decoder.colorSpace
+        };
+        
+        self.emit('format', self.format);
         break;
         
       case 'scanline':

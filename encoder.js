@@ -9,12 +9,6 @@ function JPEGEncoder(width, height, opts) {
     opts = width;
   
   this.encoder = new Encoder;
-  this.encoder.width = this.width;
-  this.encoder.height = this.height;
-  this.encoder.colorSpace = this.colorSpace;
-  if (opts && opts.quality)
-    this.encoder.quality = opts.quality;
-  
   this.ended = false;
         
   var self = this;
@@ -31,17 +25,19 @@ function JPEGEncoder(width, height, opts) {
         break;
     }
   };
-  
-  this.on('format', function() {
-    this.encoder.width = this.width;
-    this.encoder.height = this.height;
-    this.encoder.colorSpace = this.colorSpace;
-  });
 }
 
 util.inherits(JPEGEncoder, PixelStream);
 
 JPEGEncoder.prototype.supportedColorSpaces = ['rgb', 'gray', 'cmyk'];
+
+JPEGEncoder.prototype._start = function(done) {
+  this.encoder.width = this.format.width;
+  this.encoder.height = this.format.height;
+  this.encoder.colorSpace = this.format.colorSpace;
+  this.encoder.quality = this.format.quality || 100;
+  done();
+};
 
 JPEGEncoder.prototype._writePixels = function(data, done) {
   if (!this.ended) {
