@@ -1,2 +1,3 @@
-exports.JPEGDecoder = require('./decoder');
-exports.JPEGEncoder = require('./encoder');
+exports.Decoder = require('./decoder');
+exports.Encoder = require('./encoder');
+exports.mime = 'image/jpeg';
