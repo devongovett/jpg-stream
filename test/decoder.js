@@ -96,4 +96,21 @@ describe('JPEGDecoder', function() {
         done();
       }));
   });
+  
+  it('emits exif data', function(done) {
+    var metaEmitted = false;
+    
+    fs.createReadStream(__dirname + '/images/tetons.jpg')
+      .pipe(new JPEGDecoder({ width: 600, height: 400 }))
+      .on('meta', function(meta) {
+        assert.equal(typeof meta, 'object');
+        assert.equal(meta.image.Make, 'Canon');
+        assert.deepEqual(meta.exif.DateTimeOriginal, new Date("2004-06-17T13:47:02.000Z"));
+        metaEmitted = true;
+      })
+      .pipe(concat(function(frames) {
+        assert(metaEmitted);
+        done();
+      }));
+  });
 });

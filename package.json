@@ -4,6 +4,7 @@
   "description": "A streaming JPEG encoder and decoder",
   "main": "index.js",
   "dependencies": {
+    "exif-reader": "^1.0.0",
     "pixel-stream": "^1.0.3"
   },
   "devDependencies": {

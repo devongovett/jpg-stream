@@ -2,6 +2,7 @@ var jpeg = require('./build/jpeg');
 var Decoder = jpeg.JPEGDecoder;
 var util = require('util');
 var Transform = require('stream').Transform;
+var exif = require('exif-reader');
 
 function JPEGDecoder(opts) {
   Transform.call(this);
@@ -21,6 +22,11 @@ function JPEGDecoder(opts) {
         };
         
         self.emit('format', self.format);
+        break;
+        
+      case 'exif':
+        var buf = new Buffer(jpeg.HEAPU8.subarray(ptr, ptr + len));
+        self.emit('meta', exif(buf));
         break;
         
       case 'scanline':
