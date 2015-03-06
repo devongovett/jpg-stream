@@ -3,6 +3,8 @@
 #include <algorithm>
 #include "decoder.h"
 
+#define EXIF_MARKER (JPEG_APP0 + 1)
+
 void init_source(j_decompress_ptr) {}
 void term_source(j_decompress_ptr jd) {}
 
@@ -37,6 +39,9 @@ JPEGDecoder::JPEGDecoder() : callback(val::undefined()) {
   src->skip_input_data = skip_input_data;
   src->resync_to_restart = jpeg_resync_to_restart;
   src->term_source = term_source;
+  
+  // Keep APP1 blocks, for obtaining exif data.
+  jpeg_save_markers(&dec, EXIF_MARKER, 0xFFFF);
   
   imageWidth = 0;
   imageHeight = 0;
@@ -146,6 +151,8 @@ bool JPEGDecoder::startDecompress() {
   outputHeight = dec.output_height;
   callback(std::string("outputSize"));
   
+  findExif();
+  
   if (!jpeg_start_decompress(&dec))
     return false; // I/O suspension.
   
@@ -154,6 +161,14 @@ bool JPEGDecoder::startDecompress() {
   
   state = JPEG_DECOMPRESS;
   return true;
+}
+
+void JPEGDecoder::findExif() {
+  for (jpeg_saved_marker_ptr marker = dec.marker_list; marker; marker = marker->next) {
+    if (marker->marker == EXIF_MARKER && marker->data_length >= 14 && !memcmp(marker->data, "Exif", 5)) {
+      callback(std::string("exif"), (unsigned int) marker->data, (size_t) marker->data_length);
+    }
+  }
 }
 
 bool JPEGDecoder::decompress() {

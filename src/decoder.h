@@ -69,6 +69,7 @@ public:
 private:
   bool readHeader();
   bool startDecompress();
+  void findExif();
   bool decompress();
   
   jpeg_error_mgr err;
