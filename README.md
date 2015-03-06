@@ -13,6 +13,7 @@ For the browser, you can build using [Browserify](http://browserify.org/).
 
 This example uses the [concat-frames](https://github.com/devongovett/concat-frames)
 module to collect the output of the JPEG decoder into a single buffer.
+It also shows how to get EXIF metadata contained in the JPEG file.
 
 ```javascript
 var JPEGDecoder = require('jpg-stream/decoder');
@@ -21,6 +22,10 @@ var concat = require('concat-frames');
 // decode a JPEG file to RGB pixels
 fs.createReadStream('in.jpg')
   .pipe(new JPEGDecoder)
+  .on('meta', function(meta) {
+    // meta contains an exif object as decoded by
+    // https://github.com/devongovett/exif-reader
+  })
   .pipe(concat(function(frames) {
     // frames is an array of frame objects (one for JPEGs)
     // each element has a `pixels` property containing
