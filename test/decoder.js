@@ -105,7 +105,7 @@ describe('JPEGDecoder', function() {
       .on('meta', function(meta) {
         assert.equal(typeof meta, 'object');
         assert.equal(meta.image.Make, 'Canon');
-        assert.deepEqual(meta.exif.DateTimeOriginal, new Date("2004-06-17T13:47:02.000Z"));
+        assert.deepEqual(meta.exif.DateTimeOriginal.toGMTString(), new Date("2004-06-17T06:47:02.000Z").toGMTString());
         metaEmitted = true;
       })
       .pipe(concat(function(frames) {
