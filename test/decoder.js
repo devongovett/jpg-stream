@@ -9,8 +9,8 @@ describe('JPEGDecoder', function() {
     assert(JPEGDecoder.probe(file));
     assert(!JPEGDecoder.probe(new Buffer(100)));
   });
-  
-  it('decodes a file', function(done) {    
+
+  it('decodes a file', function(done) {
     fs.createReadStream(__dirname + '/images/j1.jpg')
       .pipe(new JPEGDecoder)
       .pipe(concat(function(frames) {
@@ -23,7 +23,7 @@ describe('JPEGDecoder', function() {
         done();
       }));
   });
-  
+
   it('decodes a progressive file', function(done) {
     fs.createReadStream(__dirname + '/images/j2.jpg')
       .pipe(new JPEGDecoder)
@@ -37,7 +37,7 @@ describe('JPEGDecoder', function() {
         done();
       }));
   });
-  
+
   it('can decode an rgb image', function(done) {
     fs.createReadStream(__dirname + '/images/rgb.jpg')
       .pipe(new JPEGDecoder)
@@ -51,7 +51,7 @@ describe('JPEGDecoder', function() {
         done();
       }));
   });
-  
+
   it('can decode a grayscale image', function(done) {
     fs.createReadStream(__dirname + '/images/gray.jpg')
       .pipe(new JPEGDecoder)
@@ -65,7 +65,7 @@ describe('JPEGDecoder', function() {
         done();
       }));
   });
-  
+
   it('can decode a cmyk image', function(done) {
     fs.createReadStream(__dirname + '/images/cmyk.jpg')
       .pipe(new JPEGDecoder)
@@ -79,7 +79,7 @@ describe('JPEGDecoder', function() {
         done();
       }));
   });
-  
+
   it('can downscale an image while decoding', function(done) {
     // the original image is 1600x1195
     // this tests that we can scale down while decoding
@@ -96,16 +96,16 @@ describe('JPEGDecoder', function() {
         done();
       }));
   });
-  
+
   it('emits exif data', function(done) {
     var metaEmitted = false;
-    
+
     fs.createReadStream(__dirname + '/images/tetons.jpg')
       .pipe(new JPEGDecoder({ width: 600, height: 400 }))
       .on('meta', function(meta) {
         assert.equal(typeof meta, 'object');
         assert.equal(meta.image.Make, 'Canon');
-        assert.deepEqual(meta.exif.DateTimeOriginal, new Date("2004-06-17T13:47:02.000Z"));
+        assert.deepEqual(meta.exif.DateTimeOriginal, new Date("2004-06-17T06:47:02.000Z"));
         metaEmitted = true;
       })
       .pipe(concat(function(frames) {
